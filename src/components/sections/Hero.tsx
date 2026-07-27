@@ -1,8 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { gsap } from '@/lib/gsap';
-import { ScrollTrigger } from '@/lib/gsap';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import MagneticButton from '../ui/MagneticButton';
 import ScrollIndicator from '../ui/ScrollIndicator';
 import AmbientParticles from '../ui/AmbientParticles';
