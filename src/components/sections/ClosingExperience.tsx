@@ -81,21 +81,11 @@ export default function ClosingExperience() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Initial play check
-    video.play()
-      .then(() => setVideoPlaying(true))
-      .catch((err) => {
-        console.warn("Closing video autoplay blocked or failed:", err);
-        setVideoPlaying(false);
-      });
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play()
-              .then(() => setVideoPlaying(true))
-              .catch(() => setVideoPlaying(false));
+            video.play().catch(() => {});
           } else {
             video.pause();
           }
@@ -125,6 +115,7 @@ export default function ClosingExperience() {
           playsInline
           aria-hidden="true"
           preload="none"
+          onPlaying={() => setVideoPlaying(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
           style={{ pointerEvents: 'none' }}
         >

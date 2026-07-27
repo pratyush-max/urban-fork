@@ -25,38 +25,18 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
   }, []);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    let hasAutoplayed = false;
-
     // Timeout fallback: if video is not ready/playing in 2.5s, speed up preloader timeline to transition to Hero
     const timeoutId = setTimeout(() => {
-      if (!hasAutoplayed) {
+      if (!videoPlaying) {
         console.warn("Preloader video failed to play within 2.5s. Speeding up exit transition.");
         setIsAutoplayBlocked(true);
       }
     }, 2500);
 
-    // Programmatically check if browser allows video autoplay (e.g. low power mode, cellular restriction)
-    video.play()
-      .then(() => {
-        hasAutoplayed = true;
-        setVideoPlaying(true);
-        clearTimeout(timeoutId);
-      })
-      .catch((err) => {
-        console.warn("Preloader video autoplay blocked or failed:", err);
-        setVideoPlaying(false);
-        clearTimeout(timeoutId);
-        // Autoplay failed immediately (like Low Power Mode) — speed up the transition immediately
-        setIsAutoplayBlocked(true);
-      });
-
     return () => {
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [videoPlaying]);
 
   useEffect(() => {
     if (!containerRef.current || !counterRef.current || !lineRef.current || !textRef.current) return;
@@ -137,6 +117,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
         loop
         aria-hidden="true"
         preload={isMobile ? "metadata" : "auto"}
+        onPlaying={() => setVideoPlaying(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-30' : 'opacity-0'}`}
         style={{ pointerEvents: 'none' }}
       >
