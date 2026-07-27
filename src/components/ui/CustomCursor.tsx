@@ -15,7 +15,16 @@ export default function CustomCursor() {
   const requestRef = useRef<number>(0);
 
   useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(isTouch);
+    
+    if (!isTouch) {
+      document.body.classList.add('custom-cursor-active');
+    }
+    
+    return () => {
+      document.body.classList.remove('custom-cursor-active');
+    };
   }, []);
 
   useEffect(() => {

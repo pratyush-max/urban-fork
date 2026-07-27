@@ -17,7 +17,14 @@
 }
 
 /* Reset & Base */
-html, body, a, button, input, select, textarea, [role="button"], [data-magnetic] {
+body.custom-cursor-active,
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active input,
+body.custom-cursor-active select,
+body.custom-cursor-active textarea,
+body.custom-cursor-active [role="button"],
+body.custom-cursor-active [data-magnetic] {
   cursor: none !important;
 }
 
