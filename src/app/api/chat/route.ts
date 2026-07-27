@@ -7,14 +7,15 @@ const MAX_MESSAGE_LENGTH = 1000;
 
 export async function POST(req: NextRequest) {
   try {
-    // Check key availability safely without crashing
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
+    // Check key availability safely without crashing (supports Groq & OpenAI)
+    const rawApiKey = process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY;
+    if (!rawApiKey) {
       return new Response(
         JSON.stringify({ error: 'api_key_missing' }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     }
+    const isGroq = !!process.env.GROQ_API_KEY || rawApiKey.startsWith('gsk_');
 
     const body = await req.json();
     const { messages } = body;
@@ -52,12 +53,15 @@ Format your responses cleanly. Use bold (**text**) for emphasis, and bullet poin
 RESTAURANT KNOWLEDGE BASE:
 ${JSON.stringify(conciergeKnowledge, null, 2)}`;
 
-    // Initialize OpenAI client
-    const openai = new OpenAI({ apiKey });
+    // Initialize client (compatible with OpenAI and Groq endpoints)
+    const openai = new OpenAI({
+      apiKey: rawApiKey,
+      baseURL: isGroq ? 'https://api.groq.com/openai/v1' : undefined,
+    });
 
-    // Request completions stream
+    // Request completions stream (llama-3.3-70b-versatile for Groq, gpt-4o-mini for OpenAI)
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
         ...sanitizedMessages
