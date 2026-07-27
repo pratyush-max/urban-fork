@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap'
 
 const counters = [
@@ -18,16 +18,28 @@ export default function BrandStory() {
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
   // Play/pause background video based on viewport intersection
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    // Initial play check
+    video.play()
+      .then(() => setVideoPlaying(true))
+      .catch((err) => {
+        console.warn("BrandStory video autoplay blocked or failed:", err);
+        setVideoPlaying(false);
+      });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play().catch(() => {});
+            video.play()
+              .then(() => setVideoPlaying(true))
+              .catch(() => setVideoPlaying(false));
           } else {
             video.pause();
           }
@@ -176,15 +188,17 @@ export default function BrandStory() {
           >
             <video
               ref={videoRef}
-              src="/videos/brand-story.mp4"
               autoPlay
               muted
               loop
               playsInline
               aria-hidden="true"
               preload="none"
-              className="w-full h-full object-cover"
-            />
+              className={`w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
+              style={{ pointerEvents: 'none' }}
+            >
+              <source src="/videos/brand-story.mp4" type="video/mp4" />
+            </video>
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] to-transparent to-30% pointer-events-none" />
           </div>

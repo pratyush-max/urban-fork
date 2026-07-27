@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap';
 import MagneticButton from '../ui/MagneticButton';
 import ScrollIndicator from '../ui/ScrollIndicator';
@@ -12,6 +12,7 @@ export default function Hero() {
   const lineRef = useRef<HTMLDivElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -79,11 +80,21 @@ export default function Hero() {
     const video = videoRef.current;
     if (!video) return;
 
+    // Initial play check
+    video.play()
+      .then(() => setVideoPlaying(true))
+      .catch((err) => {
+        console.warn("Hero video autoplay blocked or failed:", err);
+        setVideoPlaying(false);
+      });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play().catch(() => {});
+            video.play()
+              .then(() => setVideoPlaying(true))
+              .catch(() => setVideoPlaying(false));
           } else {
             video.pause();
           }
@@ -106,18 +117,20 @@ export default function Hero() {
       ref={sectionRef} 
       className="relative h-screen w-full overflow-hidden"
     >
-      {/* Background Video */}
+      {/* Background Video — source tag for better decoder MIME-type; pointer-events:none prevents native iOS play overlays */}
       <video
         ref={videoRef}
-        src="/videos/hero.mp4"
         autoPlay
         muted
         loop
         playsInline
         aria-hidden="true"
         preload="none"
-        className="absolute inset-0 w-full h-full object-cover transform origin-center"
-      />
+        className={`absolute inset-0 w-full h-full object-cover transform origin-center transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
+        style={{ pointerEvents: 'none' }}
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
 
       {/* Overlays */}
       <div className="absolute inset-0 bg-black/40 pointer-events-none" />

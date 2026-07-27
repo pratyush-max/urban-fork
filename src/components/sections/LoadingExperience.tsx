@@ -12,8 +12,25 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
   const counterRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Programmatically check if browser allows video autoplay (e.g. low power mode, cellular restriction)
+    video.play()
+      .then(() => {
+        setVideoPlaying(true);
+      })
+      .catch((err) => {
+        console.warn("Preloader video autoplay blocked or failed:", err);
+        setVideoPlaying(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !counterRef.current || !lineRef.current || !textRef.current) return;
@@ -77,18 +94,20 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
       className="fixed inset-0 z-60 bg-[#0D0D0D] flex flex-col items-center justify-center overflow-hidden"
       style={{ zIndex: 60 }}
     >
-      {/* Background Video — preload=auto required for iOS Safari autoplay; pointer-events:none prevents the native play button from overlaying the counter */}
+      {/* Background Video — source tag for better decoder MIME-type; pointer-events:none prevents native iOS play overlays */}
       <video 
-        src="/videos/intro.mp4"
+        ref={videoRef}
         autoPlay
         muted
         playsInline
         loop
         aria-hidden="true"
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-30' : 'opacity-0'}`}
         style={{ pointerEvents: 'none' }}
-      />
+      >
+        <source src="/videos/intro.mp4" type="video/mp4" />
+      </video>
       
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">

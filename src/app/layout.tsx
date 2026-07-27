@@ -113,7 +113,7 @@ export default function RootLayout({
   return (
     <html
       lang={seoConfig.language}
-      className={`${cormorantGaramond.variable} ${inter.variable} h-full antialiased`}
+      className={`${cormorantGaramond.variable} ${inter.variable} min-h-screen antialiased`}
     >
       <head>
         <JsonLd />

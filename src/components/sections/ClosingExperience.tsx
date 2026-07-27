@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap';
 import MagneticButton from '../ui/MagneticButton';
 
@@ -74,16 +74,28 @@ export default function ClosingExperience() {
     };
   }, []);
 
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
   // Viewport observer to play/pause video when off-screen
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    // Initial play check
+    video.play()
+      .then(() => setVideoPlaying(true))
+      .catch((err) => {
+        console.warn("Closing video autoplay blocked or failed:", err);
+        setVideoPlaying(false);
+      });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play().catch(() => {});
+            video.play()
+              .then(() => setVideoPlaying(true))
+              .catch(() => setVideoPlaying(false));
           } else {
             video.pause();
           }
@@ -107,15 +119,17 @@ export default function ClosingExperience() {
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0D0D0D] z-0">
         <video
           ref={videoRef}
-          src="/videos/closing.mp4"
           autoPlay
           muted
           loop
           playsInline
           aria-hidden="true"
           preload="none"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
+          style={{ pointerEvents: 'none' }}
+        >
+          <source src="/videos/closing.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/50" />
         
         {/* Content Overlay */}
