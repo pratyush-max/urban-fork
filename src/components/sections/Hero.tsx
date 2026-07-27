@@ -134,7 +134,8 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
         {/* Main Headline with native character split */}
         <h1 
-          className="font-serif font-light text-[clamp(3rem,8vw,7rem)] uppercase tracking-[0.2em] text-[#FFFFFF] mb-6 overflow-hidden py-2"
+          className="font-serif font-light uppercase tracking-[0.15em] text-[#FFFFFF] mb-6 overflow-visible py-2 leading-none"
+          style={{ fontSize: 'clamp(2rem, 10vw, 7rem)', wordBreak: 'keep-all', whiteSpace: 'nowrap' }}
         >
           {headline.split('').map((char, idx) => (
             <span key={idx} className="hero-char inline-block whitespace-pre">

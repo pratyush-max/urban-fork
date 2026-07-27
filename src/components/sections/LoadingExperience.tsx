@@ -77,7 +77,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
       className="fixed inset-0 z-60 bg-[#0D0D0D] flex flex-col items-center justify-center overflow-hidden"
       style={{ zIndex: 60 }}
     >
-      {/* Background Video */}
+      {/* Background Video — preload=auto required for iOS Safari autoplay; pointer-events:none prevents the native play button from overlaying the counter */}
       <video 
         src="/videos/intro.mp4"
         autoPlay
@@ -85,8 +85,9 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
         playsInline
         loop
         aria-hidden="true"
-        preload="none"
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover opacity-30"
+        style={{ pointerEvents: 'none' }}
       />
       
       {/* Content */}
