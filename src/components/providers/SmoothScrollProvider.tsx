@@ -12,6 +12,18 @@ export default function SmoothScrollProvider({
   useEffect(() => {
     registerScrollTrigger();
 
+    // Check if touch device or mobile/tablet viewport
+    const isTouch = 
+      typeof window !== 'undefined' && 
+      ('ontouchstart' in window || 
+       navigator.maxTouchPoints > 0 || 
+       window.innerWidth < 1024);
+
+    if (isTouch) {
+      // Retain 100% native momentum scrolling on mobile platforms
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => 1 - Math.pow(1 - t, 4),

@@ -18,6 +18,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isAutoplayBlocked, setIsAutoplayBlocked] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -33,9 +34,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
     const timeoutId = setTimeout(() => {
       if (!hasAutoplayed) {
         console.warn("Preloader video failed to play within 2.5s. Speeding up exit transition.");
-        if (tlRef.current) {
-          tlRef.current.timeScale(2.5); // Speeds up counter and line progress by 2.5x
-        }
+        setIsAutoplayBlocked(true);
       }
     }, 2500);
 
@@ -51,9 +50,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
         setVideoPlaying(false);
         clearTimeout(timeoutId);
         // Autoplay failed immediately (like Low Power Mode) — speed up the transition immediately
-        if (tlRef.current) {
-          tlRef.current.timeScale(2.5);
-        }
+        setIsAutoplayBlocked(true);
       });
 
     return () => {
@@ -98,6 +95,11 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
       // Store reference to timeline to allow dynamic timeScale adjustments
       tlRef.current = tl;
 
+      // Reactively apply timescale acceleration if autoplay is blocked
+      if (isAutoplayBlocked) {
+        tl.timeScale(2.5);
+      }
+
       // Animate counter and line width
       tl.to(counterState, {
         value: 100,
@@ -118,7 +120,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
     }, containerRef);
 
     return () => ctx.revert();
-  }, [onComplete]);
+  }, [onComplete, isAutoplayBlocked]);
 
   return (
     <div 
