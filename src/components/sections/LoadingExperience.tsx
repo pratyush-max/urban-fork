@@ -13,23 +13,52 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
   const lineRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
   
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    let hasAutoplayed = false;
+
+    // Timeout fallback: if video is not ready/playing in 2.5s, speed up preloader timeline to transition to Hero
+    const timeoutId = setTimeout(() => {
+      if (!hasAutoplayed) {
+        console.warn("Preloader video failed to play within 2.5s. Speeding up exit transition.");
+        if (tlRef.current) {
+          tlRef.current.timeScale(2.5); // Speeds up counter and line progress by 2.5x
+        }
+      }
+    }, 2500);
+
     // Programmatically check if browser allows video autoplay (e.g. low power mode, cellular restriction)
     video.play()
       .then(() => {
+        hasAutoplayed = true;
         setVideoPlaying(true);
+        clearTimeout(timeoutId);
       })
       .catch((err) => {
         console.warn("Preloader video autoplay blocked or failed:", err);
         setVideoPlaying(false);
+        clearTimeout(timeoutId);
+        // Autoplay failed immediately (like Low Power Mode) — speed up the transition immediately
+        if (tlRef.current) {
+          tlRef.current.timeScale(2.5);
+        }
       });
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -65,6 +94,9 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
           });
         }
       });
+
+      // Store reference to timeline to allow dynamic timeScale adjustments
+      tlRef.current = tl;
 
       // Animate counter and line width
       tl.to(counterState, {
@@ -102,7 +134,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
         playsInline
         loop
         aria-hidden="true"
-        preload="auto"
+        preload={isMobile ? "metadata" : "auto"}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-30' : 'opacity-0'}`}
         style={{ pointerEvents: 'none' }}
       >
