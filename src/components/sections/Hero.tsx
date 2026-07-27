@@ -1,12 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap';
 import MagneticButton from '../ui/MagneticButton';
 import ScrollIndicator from '../ui/ScrollIndicator';
 import AmbientParticles from '../ui/AmbientParticles';
@@ -20,6 +15,7 @@ export default function Hero() {
 
   useEffect(() => {
     if (!sectionRef.current) return;
+    registerScrollTrigger();
 
     const ctx = gsap.context(() => {
       // Ensure elements are invisible before animation

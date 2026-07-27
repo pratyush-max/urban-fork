@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { gsap } from '@/lib/gsap';
 
 interface LoadingExperienceProps {
   onComplete: () => void;

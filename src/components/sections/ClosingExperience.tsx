@@ -1,12 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap';
 import MagneticButton from '../ui/MagneticButton';
 
 export default function ClosingExperience() {
@@ -16,6 +11,7 @@ export default function ClosingExperience() {
   const ctaBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    registerScrollTrigger();
     const section = sectionRef.current;
     const video = videoRef.current;
     const content = contentRef.current;

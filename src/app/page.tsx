@@ -17,12 +17,7 @@ import ContactExperience from '@/components/sections/ContactExperience';
 import ClosingExperience from '@/components/sections/ClosingExperience';
 import ConciergeAI from '@/components/ui/ConciergeAI';
 
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { ScrollTrigger, registerScrollTrigger } from '@/lib/gsap';
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +29,7 @@ export default function HomePage() {
     setTimeout(() => {
       setShowNavbar(true);
       // Recalculate ScrollTrigger triggers once loader unmounts
+      registerScrollTrigger();
       ScrollTrigger.refresh();
     }, 300);
   }, []);

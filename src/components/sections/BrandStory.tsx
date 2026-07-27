@@ -1,12 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+import { gsap, ScrollTrigger, registerScrollTrigger } from '@/lib/gsap'
 
 const counters = [
   { value: 15, suffix: '+', label: 'Years of Excellence' },
@@ -48,6 +43,7 @@ export default function BrandStory() {
   }, []);
 
   useEffect(() => {
+    registerScrollTrigger()
     const ctx = gsap.context(() => {
       // 1. Text elements slide in
       if (textElementsRef.current) {
