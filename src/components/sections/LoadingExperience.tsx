@@ -25,13 +25,13 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
   }, []);
 
   useEffect(() => {
-    // Timeout fallback: if video is not ready/playing in 2.5s, speed up preloader timeline to transition to Hero
+    // Timeout fallback: if video is not ready/playing in 2.0s, speed up preloader timeline to transition to Hero
     const timeoutId = setTimeout(() => {
       if (!videoPlaying) {
-        console.warn("Preloader video failed to play within 2.5s. Speeding up exit transition.");
+        console.warn("Preloader video failed to play within 2.0s. Speeding up exit transition.");
         setIsAutoplayBlocked(true);
       }
-    }, 2500);
+    }, 2000);
 
     return () => {
       clearTimeout(timeoutId);
