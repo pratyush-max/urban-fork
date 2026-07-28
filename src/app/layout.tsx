@@ -118,7 +118,7 @@ export default function RootLayout({
       <head>
         <JsonLd />
       </head>
-      <body className="min-h-full bg-[#0D0D0D] text-white font-sans">
+      <body className="font-sans antialiased min-h-[100dvh] flex flex-col bg-[#0D0D0D] text-white">
         {/* Skip to content — accessibility */}
         <a
           href="#main-content"

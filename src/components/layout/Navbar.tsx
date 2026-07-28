@@ -126,7 +126,7 @@ export default function Navbar({ isVisible = true }: NavbarProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-[#0D0D0D] z-40 flex flex-col items-center justify-center min-h-screen"
+                className="fixed inset-0 bg-[#0D0D0D] z-40 flex flex-col items-center justify-center min-h-[100dvh]"
               >
                 <div className="flex flex-col items-center space-y-8">
                   {navLinks.map((link, i) => (

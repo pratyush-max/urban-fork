@@ -19,7 +19,12 @@ export default function ClosingExperience() {
 
     if (!section || !video || !content || !ctaBar) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, () => {
       // Ken Burns slow zoom effect
       gsap.fromTo(
         video,
@@ -37,7 +42,7 @@ export default function ClosingExperience() {
       );
 
       // Animate headline words using class selectors
-      gsap.from('.closing-word', {
+      gsap.from(content.querySelectorAll('.closing-word'), {
         y: 40,
         opacity: 0,
         stagger: 0.05,
@@ -67,10 +72,10 @@ export default function ClosingExperience() {
           },
         }
       );
-    }, section);
+    });
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, []);
 
@@ -104,9 +109,9 @@ export default function ClosingExperience() {
   const line2 = "Luxury Never Tasted Better";
 
   return (
-    <section id="closing" ref={sectionRef} className="relative min-h-[150vh] bg-[#0D0D0D] z-10">
+    <section id="closing" ref={sectionRef} className="relative min-h-[150dvh] bg-[#0D0D0D] z-10">
       {/* Video Background Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0D0D0D] z-0">
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#0D0D0D] z-0">
         <video
           ref={videoRef}
           autoPlay

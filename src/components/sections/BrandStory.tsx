@@ -46,13 +46,20 @@ export default function BrandStory() {
 
   useEffect(() => {
     registerScrollTrigger()
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia()
+    
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
+      
       // 1. Text elements slide in
       if (textElementsRef.current) {
         const children = textElementsRef.current.children
         gsap.fromTo(
           children,
-          { x: -60, opacity: 0 },
+          { x: isDesktop ? -60 : -30, opacity: 0 },
           {
             x: 0,
             opacity: 1,
@@ -109,33 +116,52 @@ export default function BrandStory() {
         })
       }
 
-      // 4. Video clip-path reveal
+      // 4. Video clip-path reveal (simplify on mobile)
       if (videoContainerRef.current) {
-        gsap.fromTo(
-          videoContainerRef.current,
-          { clipPath: 'inset(100% 0 0 0)' },
-          {
-            clipPath: 'inset(0% 0 0 0)',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: videoContainerRef.current,
-              start: 'top 75%',
-              end: 'top 25%',
-              scrub: 1,
-            },
-          }
-        )
+        if (isDesktop) {
+          gsap.fromTo(
+            videoContainerRef.current,
+            { clipPath: 'inset(100% 0 0 0)' },
+            {
+              clipPath: 'inset(0% 0 0 0)',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: videoContainerRef.current,
+                start: 'top 75%',
+                end: 'top 25%',
+                scrub: 1,
+              },
+            }
+          )
+        } else {
+          // Fallback fade-in for mobile to avoid heavy clip-path calculations and layout issues
+          gsap.fromTo(
+            videoContainerRef.current,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: videoContainerRef.current,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            }
+          )
+        }
       }
-    }, sectionRef)
+    });
 
-    return () => ctx.revert()
+    return () => mm.revert()
   }, [])
 
   return (
     <section
       id="our-story"
       ref={sectionRef}
-      className="relative min-h-screen py-32 px-8 overflow-hidden bg-[#0D0D0D]"
+      className="relative min-h-[100dvh] py-32 px-8 overflow-hidden bg-[#0D0D0D]"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Left Column */}

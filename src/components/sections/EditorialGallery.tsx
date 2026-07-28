@@ -98,7 +98,7 @@ export default function EditorialGallery() {
   };
 
   return (
-    <section id="gallery" className="relative bg-[#0D0D0D] py-32 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-screen">
+    <section id="gallery" className="relative bg-[#0D0D0D] py-32 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[100dvh]">
       <AmbientParticles className="absolute inset-0 z-0 pointer-events-none opacity-20" />
 
       {/* Header */}

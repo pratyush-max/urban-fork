@@ -52,39 +52,39 @@ export default function HomePage() {
         <LoadingExperience onComplete={handleLoadingComplete} />
       )}
 
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} className="overflow-x-hidden">
         <Hero />
         
-        <LazySection minHeight="100vh">
+        <LazySection minHeight="100dvh">
           <BrandStory />
         </LazySection>
 
-        <LazySection minHeight="100vh">
+        <LazySection minHeight="100dvh">
           <InteractiveMenu />
         </LazySection>
 
-        <LazySection minHeight="100vh">
+        <LazySection minHeight="100dvh">
           <EditorialGallery />
         </LazySection>
 
-        <LazySection minHeight="50vh">
+        <LazySection minHeight="50dvh">
           <CustomerExperience />
         </LazySection>
 
-        <LazySection minHeight="80vh">
+        <LazySection minHeight="80dvh">
           <ReservationExperience />
         </LazySection>
 
-        <LazySection minHeight="80vh">
+        <LazySection minHeight="80dvh">
           <ContactExperience />
         </LazySection>
 
-        <LazySection minHeight="100vh">
+        <LazySection minHeight="100dvh">
           <ClosingExperience />
         </LazySection>
       </main>
 
-      <LazySection minHeight="20vh">
+      <LazySection minHeight="20dvh">
         <Footer />
       </LazySection>
     </SmoothScrollProvider>

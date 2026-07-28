@@ -124,7 +124,7 @@ function TestimonialCard({ item }: TestimonialCardProps) {
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-      className="glass-card w-[350px] md:w-[420px] p-8 rounded-xl flex flex-col justify-between shrink-0 relative overflow-hidden group border border-white/5 hover:border-[#D4AF37]/20 transition-all duration-300"
+      className="glass-card w-[85vw] max-w-[350px] md:max-w-[420px] p-8 rounded-xl flex flex-col justify-between shrink-0 relative overflow-hidden group border border-white/5 hover:border-[#D4AF37]/20 transition-all duration-300"
     >
       {/* Quotation mark glaze */}
       <span className="absolute -top-6 -right-2 font-serif text-[10rem] font-light text-white/5 pointer-events-none select-none italic">

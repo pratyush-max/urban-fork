@@ -232,7 +232,7 @@ Thank you.`;
   // Prevent double rendering of elements using Math.random/Dates during Server render
   if (!mounted) {
     return (
-      <section id="reservations" className="relative min-h-screen py-32 bg-[#0D0D0D] flex items-center justify-center">
+      <section id="reservations" className="relative min-h-[100dvh] py-32 bg-[#0D0D0D] flex items-center justify-center">
         <div className="text-center font-serif text-lg text-[#D4AF37] opacity-60">
           Loading Concierge Service...
         </div>
@@ -245,7 +245,7 @@ Thank you.`;
   return (
     <section 
       id="reservations" 
-      className="relative min-h-screen py-32 px-4 sm:px-6 lg:px-8 bg-[#0D0D0D] flex flex-col justify-center overflow-hidden"
+      className="relative min-h-[100dvh] py-32 px-4 sm:px-6 lg:px-8 bg-[#0D0D0D] flex flex-col justify-center overflow-hidden"
     >
       <AmbientParticles />
 

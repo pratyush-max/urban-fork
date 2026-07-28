@@ -105,7 +105,7 @@ export default function Hero() {
     <section 
       id="hero" 
       ref={sectionRef} 
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-[100dvh] w-full overflow-hidden"
     >
       {/* Background Video — source tag for better decoder MIME-type; pointer-events:none prevents native iOS play overlays */}
       <video
@@ -135,7 +135,7 @@ export default function Hero() {
         {/* Main Headline with native character split */}
         <h1 
           className="font-serif font-light uppercase tracking-[0.15em] text-[#FFFFFF] mb-6 overflow-visible py-2 leading-none"
-          style={{ fontSize: 'clamp(2rem, 10vw, 7rem)', wordBreak: 'keep-all', whiteSpace: 'nowrap' }}
+          style={{ fontSize: 'clamp(2rem, 10vw, 7rem)', wordBreak: 'keep-all' }}
         >
           {headline.split('').map((char, idx) => (
             <span key={idx} className="hero-char inline-block whitespace-pre">
