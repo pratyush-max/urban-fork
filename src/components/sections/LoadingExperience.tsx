@@ -117,6 +117,7 @@ export default function LoadingExperience({ onComplete }: LoadingExperienceProps
         loop
         aria-hidden="true"
         preload={isMobile ? "metadata" : "auto"}
+        poster="/videos/posters/intro.jpg"
         onPlaying={() => setVideoPlaying(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-30' : 'opacity-0'}`}
         style={{ pointerEvents: 'none' }}

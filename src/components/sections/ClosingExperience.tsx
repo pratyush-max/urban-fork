@@ -120,6 +120,7 @@ export default function ClosingExperience() {
           playsInline
           aria-hidden="true"
           preload="none"
+          poster="/videos/posters/closing.jpg"
           onPlaying={() => setVideoPlaying(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
           style={{ pointerEvents: 'none' }}

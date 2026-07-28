@@ -116,8 +116,9 @@ export default function Hero() {
         playsInline
         aria-hidden="true"
         preload="none"
+        poster="/videos/posters/hero.jpg"
         onPlaying={() => setVideoPlaying(true)}
-        className={`absolute inset-0 w-full h-full object-cover transform origin-center transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute inset-0 w-full h-full object-cover transform origin-center transition-opacity duration-1000 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
         style={{ pointerEvents: 'none' }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />

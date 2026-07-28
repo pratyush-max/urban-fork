@@ -210,6 +210,7 @@ export default function BrandStory() {
               playsInline
               aria-hidden="true"
               preload="none"
+              poster="/videos/posters/brand-story.jpg"
               onPlaying={() => setVideoPlaying(true)}
               className={`w-full h-full object-cover transition-opacity duration-700 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
               style={{ pointerEvents: 'none' }}

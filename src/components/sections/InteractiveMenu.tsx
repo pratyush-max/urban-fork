@@ -39,10 +39,13 @@ function LazyVideo({ src }: LazyVideoProps) {
     };
   }, []);
 
+  const posterSrc = src.replace('.mp4', '.jpg').replace('/videos/', '/videos/posters/');
+
   return (
     <video
       ref={videoRef}
       src={src}
+      poster={posterSrc}
       muted
       loop
       playsInline
